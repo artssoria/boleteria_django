@@ -1,0 +1,12 @@
+{% extends "boletos/base.html" %}
+{% block content %}
+  <h2>Detalles del Boleto</h2>
+  <p>Pasajero: {{ boleto.nombre_pasajero }}</p>
+  <p>Destino: {{ boleto.destino }}</p>
+  <p>Fecha: {{ boleto.fecha_viaje }} {{ boleto.hora_salida }}</p>
+  <p>Precio: ${{ boleto.precio }}</p>
+
+  <a href="{% url 'editar_boleto' boleto.pk %}">✏️ Editar</a> |
+  <a href="{% url 'eliminar_boleto' boleto.pk %}">🗑️ Eliminar</a>
+  <a href="{% url 'generar_pdf' boleto.pk %}">🧾 Descargar Comprobante PDF</a> 
+{% endblock %}

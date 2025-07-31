@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Boletería{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'buscar_boletos' %}">🔍 Buscar</a> |
+        <a href="{% url 'listar_boletos' %}">📋 Lista de Boletos</a> |
+        <a href="{% url 'crear_boleto' %}">➕ Registrar Boleto</a>
+    </nav>
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

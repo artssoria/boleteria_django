@@ -1,0 +1,18 @@
+{% extends "boletos/base.html" %}
+
+{% block title %}Lista de Boletos{% endblock %}
+
+{% block content %}
+    <h1>Boletos registrados</h1>
+    <ul>
+        {% for boleto in boletos %}
+            <li>
+  <a href="{% url 'detalle_boleto' boleto.pk %}">
+    {{ boleto.nombre_pasajero }} → {{ boleto.destino }} ({{ boleto.fecha_viaje }})
+  </a>
+</li>
+        {% empty %}
+            <li>No hay boletos registrados.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

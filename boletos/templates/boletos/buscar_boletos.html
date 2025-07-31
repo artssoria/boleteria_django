@@ -1,0 +1,19 @@
+{% extends "boletos/base.html" %}
+{% block content %}
+<h1>Buscar Boletos</h1>
+<form method="get">
+    <input type="text" name="q" placeholder="Destino o empresa" value="{{ consulta }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<ul>
+    {% for boleto in boletos %}
+    <li>
+        {{ boleto.nombre_pasajero }} → {{ boleto.destino }} ({{ boleto.bus.empresa }})
+        [{{ boleto.fecha_viaje }} - ${{ boleto.precio }}]
+    </li>
+    {% empty %}
+    <li>No se encontraron resultados.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

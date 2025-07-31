@@ -1,0 +1,61 @@
+# Entornos virtuales
+venv/
+env/
+*.venv/
+*.env/
+
+# Archivos de Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Archivos de Django
+*.sqlite3
+*.db
+media/
+staticfiles/
+*.log
+
+# Archivos de configuración local
+.env
+local_settings.py
+*.local
+
+# Archivos de caché
+*.cache
+.cache/
+*.bak
+*.swp
+
+# Archivos de desarrollo en Termux
+*.pid
+*.seed
+*.pid.lock
+
+# Directorios de paquetes y dependencias
+node_modules/
+.npm/
+.yarn/
+
+# Archivos de editores y sistemas
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+# Archivos de pruebas y cobertura
+htmlcov/
+.coverage
+.pytest_cache/
+coverage.xml
+*.cover
+*.py,cover
+
+# Archivos de documentación generada
+docs/_build/

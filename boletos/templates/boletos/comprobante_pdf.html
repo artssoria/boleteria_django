@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; }
+        h2 { text-align: center; }
+        p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h2>Comprobante de Boleto</h2>
+    <p><strong>Pasajero:</strong> {{ boleto.nombre_pasajero }}</p>
+    <p><strong>Destino:</strong> {{ boleto.destino }}</p>
+    <p><strong>Fecha:</strong> {{ boleto.fecha_viaje }} - {{ boleto.hora_salida }}</p>
+    <p><strong>Precio:</strong> ${{ boleto.precio }}</p>
+    <p><strong>Bus:</strong> {{ boleto.bus }}</p>
+</body>
+</html>
