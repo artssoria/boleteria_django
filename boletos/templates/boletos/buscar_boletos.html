@@ -1,19 +1,35 @@
 {% extends "boletos/base.html" %}
+{% block title %}Buscar Boletos{% endblock %}
+
 {% block content %}
-<h1>Buscar Boletos</h1>
-<form method="get">
-    <input type="text" name="q" placeholder="Destino o empresa" value="{{ consulta }}">
-    <button type="submit">Buscar</button>
+<h2 class="h4 text-info mb-3">🔍 Buscar Boletos</h2>
+
+<form method="get" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" placeholder="Buscar por destino o empresa..." value="{{ consulta }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </div>
 </form>
 
-<ul>
-    {% for boleto in boletos %}
-    <li>
-        {{ boleto.nombre_pasajero }} → {{ boleto.destino }} ({{ boleto.bus.empresa }})
-        [{{ boleto.fecha_viaje }} - ${{ boleto.precio }}]
-    </li>
-    {% empty %}
-    <li>No se encontraron resultados.</li>
-    {% endfor %}
-</ul>
+<div class="row g-3">
+  {% for boleto in boletos %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ boleto.nombre_pasajero }}</h5>
+          <p class="card-text">
+            Destino: {{ boleto.destino }}<br>
+            Fecha: {{ boleto.fecha_viaje }}<br>
+            Empresa: {{ boleto.bus.empresa }}
+          </p>
+          <a href="{% url 'detalle_boleto' boleto.pk %}" class="btn btn-sm btn-primary">Ver Detalles</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">No se encontraron resultados.</div>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}

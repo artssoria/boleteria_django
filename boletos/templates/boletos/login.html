@@ -1,0 +1,26 @@
+{% extends "boletos/base.html" %}
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm p-4 mx-auto" style="max-width: 400px;">
+  <h2 class="mb-4 text-center text-primary">🔐 Iniciar Sesión</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+      <div class="alert alert-danger">Credenciales inválidas.</div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label class="form-label">Usuario</label>
+      {{ form.username }}
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      {{ form.password }}
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+  </form>
+</div>
+{% endblock %}

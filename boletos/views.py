@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from .models import Boleto
 from django import forms
 from django.db import models
+from datetime import datetime
 
 class BoletoForm(forms.ModelForm):
     class Meta:
@@ -14,7 +17,7 @@ def crear_boleto(request):
         form = BoletoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('crear_boleto')
+            return redirect('listar_boletos') 
     else:
         form = BoletoForm()
 
@@ -57,22 +60,33 @@ def eliminar_boleto(request, pk):
         boleto.delete()
         return redirect('listar_boletos')
     return render(request, 'boletos/eliminar_boleto.html', {'boleto': boleto})
+    
+def filtrar_por_fecha(request):
+    desde = request.GET.get('desde')
+    hasta = request.GET.get('hasta')
+    boletos = Boleto.objects.all().order_by('-fecha_viaje')
 
+    if desde and hasta:
+        try:
+            f_desde = datetime.strptime(desde, '%Y-%m-%d').date()
+            f_hasta = datetime.strptime(hasta, '%Y-%m-%d').date()
+            boletos = boletos.filter(fecha_viaje__range=(f_desde, f_hasta))
+        except ValueError:
+            pass 
 
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from django.http import HttpResponse
-import io
-
-def generar_pdf_boleto(request, pk):
-    boleto = get_object_or_404(Boleto, pk=pk)
-    template = get_template("boletos/comprobante_pdf.html")
-    html = template.render({"boleto": boleto})
-
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f"attachment; filename=boleto_{boleto.id}.pdf"
-
-    pisa_status = pisa.CreatePDF(io.BytesIO(html.encode("UTF-8")), dest=response)
-    if pisa_status.err:
-        return HttpResponse("Error al generar el PDF", status=500)
-    return response
+    return render(request, 'boletos/filtro_fecha.html', {
+        'boletos': boletos,
+        'desde': desde,
+        'hasta': hasta
+    })
+    
+def registro_usuario(request):
+    if request.method  == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            login(request, usuario)
+            return redirect('inicio')
+    else:
+        form = UserCreationForm()
+    return render(request, 'boletos/registro.html', {'form':form})

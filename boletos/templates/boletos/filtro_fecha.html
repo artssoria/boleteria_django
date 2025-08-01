@@ -1,0 +1,46 @@
+{% extends "boletos/base.html" %}
+{% block title %}Filtrar por Fecha{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h2 class="mb-4 text-primary">📅 Filtrar Boletos por Fecha</h2>
+
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-12 col-md-5">
+      <label for="fecha_inicio" class="form-label">Desde:</label>
+      <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{ fecha_inicio }}">
+    </div>
+
+    <div class="col-12 col-md-5">
+      <label for="fecha_fin" class="form-label">Hasta:</label>
+      <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{ fecha_fin }}">
+    </div>
+
+    <div class="col-12 col-md-2 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+  </form>
+
+  <div class="row g-3">
+    {% for boleto in boletos %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ boleto.nombre_pasajero }}</h5>
+            <p class="card-text">
+              Destino: {{ boleto.destino }}<br>
+              Fecha: {{ boleto.fecha_viaje }}<br>
+              Bus: {{ boleto.bus }}
+            </p>
+            <a href="{% url 'detalle_boleto' boleto.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No se encontraron boletos en ese rango de fechas.</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
