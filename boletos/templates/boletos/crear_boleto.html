@@ -5,6 +5,18 @@
 <div class="card shadow-sm p-4">
   <h2 class="mb-3 text-success">Registrar nuevo boleto</h2>
 
+  <!-- Selección de Bus -->
+  <form method="get" id="form_bus_select" class="mb-4">
+    <label for="bus_select" class="form-label">Seleccionar Bus:</label>
+    <select name="bus" id="bus_select" class="form-select" onchange="document.getElementById('form_bus_select').submit()">
+      <option value="">--Seleccione un bus--</option>
+      {% for bus in buses %}
+        <option value="{{ bus.id }}" {% if bus_seleccionado and bus_seleccionado.id == bus.id %}selected{% endif %}>{{ bus }}</option>
+      {% endfor %}
+    </select>
+  </form>
+
+  <!-- Formulario para crear boleto -->
   <form method="post" novalidate>
     {% csrf_token %}
 
@@ -23,17 +35,63 @@
       </div>
     {% endif %}
 
-    {% for field in form %}
-      <div class="mb-3">
-        <label class="form-label">{{ field.label }}</label>
-        {{ field }}
-        {% if field.help_text %}
-          <small class="form-text text-muted">{{ field.help_text }}</small>
-        {% endif %}
+    <div class="row">
+      <div class="col-md-6">
+        {% for field in form %}
+          {% if field.name != 'asiento' and field.name != 'bus' %}
+            <div class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+        <!-- campo oculto para asiento -->
+        <input type="hidden" name="asiento" id="asientoSeleccionado">
+        <!-- campo oculto para bus, se llena con el bus seleccionado -->
+        <input type="hidden" name="bus" value="{{ bus_seleccionado.id }}" />
       </div>
-    {% endfor %}
 
-    <button type="submit" class="btn btn-success">Guardar boleto</button>
+      <div class="col-md-6">
+        <label class="form-label"><strong>Seleccionar asiento</strong></label>
+        <div class="d-flex flex-wrap gap-2">
+          {% for n in total_asientos %}
+            {% if n in asientos_ocupados %}
+              <button type="button" class="btn btn-outline-danger disabled" disabled>{{ n }}</button>
+            {% else %}
+              <button type="button" class="btn btn-outline-success asiento-btn" data-asiento="{{ n }}">{{ n }}</button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Guardar boleto</button>
   </form>
 </div>
+
+<script>
+  // Selección de asiento
+  const botones = document.querySelectorAll('.asiento-btn');
+  const campoAsiento = document.getElementById('asientoSeleccionado');
+
+  botones.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botones.forEach(b => b.classList.remove('btn-success'));
+      btn.classList.add('btn-success');
+      campoAsiento.value = btn.dataset.asiento;
+    });
+  });
+
+  // Validar que se haya seleccionado asiento antes de enviar formulario
+  const form = document.querySelector('form[method="post"]');
+  form.addEventListener('submit', function(e) {
+    if (!campoAsiento.value) {
+      e.preventDefault();
+      alert('Por favor, seleccione un asiento.');
+    }
+  });
+</script>
 {% endblock %}

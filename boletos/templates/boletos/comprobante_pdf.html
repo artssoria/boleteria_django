@@ -1,19 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <style>
-        body { font-family: DejaVu Sans, sans-serif; }
-        h2 { text-align: center; }
-        p { margin: 5px 0; }
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
-    <h2>Comprobante de Boleto</h2>
-    <p><strong>Pasajero:</strong> {{ boleto.nombre_pasajero }}</p>
-    <p><strong>Destino:</strong> {{ boleto.destino }}</p>
-    <p><strong>Fecha:</strong> {{ boleto.fecha_viaje }} - {{ boleto.hora_salida }}</p>
-    <p><strong>Precio:</strong> ${{ boleto.precio }}</p>
-    <p><strong>Bus:</strong> {{ boleto.bus }}</p>
+
+    <div class="encabezado">
+        <div class="logo-texto">🚍 Boletería Jujuy</div>
+        <div class="subtitulo">Comprobante oficial de pasaje</div>
+    </div>
+
+    <div class="info-boleto">
+        <p><span class="label">Pasajero:</span> {{ boleto.nombre_pasajero }}</p>
+        <p><span class="label">Destino:</span> {{ boleto.destino }}</p>
+        <p><span class="label">Fecha:</span> {{ boleto.fecha_viaje }}</p>
+        <p><span class="label">Hora de salida:</span> {{ boleto.hora_salida }}</p>
+        <p><span class="label">Precio:</span> ${{ boleto.precio }}</p>
+        <p><span class="label">Bus:</span> {{ boleto.bus }}</p>
+        <p><span class="label">Asiento:</span> {{ boleto.asiento }}</p>
+    </div>
+
+    <div class="footer">
+        Gracias por viajar con nosotros.
+    </div>
+
 </body>
 </html>
