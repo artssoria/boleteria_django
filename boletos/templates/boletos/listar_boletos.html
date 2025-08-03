@@ -9,6 +9,7 @@
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
         <div class="card-body">
+            <a href="{% url 'detalle_boleto' boleto.pk %}" class="text-decoration-none text-dark">
           <h5 class="card-title">{{ boleto.nombre_pasajero }}</h5>
           <p class="card-text">
             Destino: <strong>{{ boleto.destino }}</strong><br>
@@ -16,6 +17,7 @@
             Bus: {{ boleto.bus }}
           </p>
           <a href="{% url 'detalle_boleto' boleto.pk %}" class="btn btn-sm btn-primary">Ver Detalles</a>
+          </a>
         </div>
       </div>
     </div>
