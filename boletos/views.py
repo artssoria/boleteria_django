@@ -6,11 +6,22 @@ from .models import Boleto
 from django import forms
 from django.db import models
 from datetime import datetime
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+
 
 class BoletoForm(forms.ModelForm):
     class Meta:
         model = Boleto
         fields = '__all__'
+        widgets = {
+            'fecha_viaje': forms.DateInput(
+                attrs={'type': 'date', 'class': 'form-control'}
+            ),
+            'hora_salida': forms.TimeInput(
+                attrs={'type': 'time', 'class': 'form-control'}
+            ),
+        }
 
 def crear_boleto(request):
     if request.method == 'POST':
@@ -90,3 +101,28 @@ def registro_usuario(request):
     else:
         form = UserCreationForm()
     return render(request, 'boletos/registro.html', {'form':form})
+
+def generar_pdf_boleto(request, pk):
+    boleto = get_object_or_404(Boleto, pk=pk)
+
+    # Crear el PDF en memoria
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="boleto_{boleto.pk}.pdf"'
+
+    p = canvas.Canvas(response)
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 800, "🚌 Comprobante de Boleto")
+
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 760, f"Pasajero: {boleto.nombre_pasajero}")
+    p.drawString(100, 740, f"Destino: {boleto.destino}")
+    p.drawString(100, 720, f"Fecha de viaje: {boleto.fecha_viaje}")
+    p.drawString(100, 700, f"Hora de salida: {boleto.hora_salida}")
+    p.drawString(100, 680, f"Precio: ${boleto.precio}")
+    p.drawString(100, 660, f"Empresa: {boleto.bus.empresa}")
+
+    p.showPage()
+    p.save()
+
+    return response

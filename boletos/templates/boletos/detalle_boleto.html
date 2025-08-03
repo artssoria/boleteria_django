@@ -14,7 +14,9 @@
     <li class="list-group-item"><strong>Bus:</strong> {{ boleto.bus }}</li>
   </ul>
 
-  <a href="{% url 'editar_boleto' boleto.pk %}" class="btn btn-warning me-2">✏️ Editar</a>
+  <a href="{% url 'editar_boleto' boleto.pk %}" class="btn btn-warning ">✏️ Editar</a>
   <a href="{% url 'eliminar_boleto' boleto.pk %}" class="btn btn-danger">🗑️ Eliminar</a>
+  <a href="{% url 'generar_pdf' boleto.pk %}" class="btn btn-sm btn-outline-secondary">🧾 Descargar Comprobante PDF</a>
+
 </div>
 {% endblock %}
