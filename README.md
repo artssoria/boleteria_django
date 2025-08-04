@@ -1,6 +1,6 @@
 # Sistema de Boletería en Django
 
-### _Estrusturas de carpetas_
+### _Estructuras de carpetas_
 ```
 ├── .gitignore
 ├── README.md
